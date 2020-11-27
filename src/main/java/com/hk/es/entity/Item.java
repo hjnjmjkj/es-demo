@@ -9,7 +9,7 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
  * @author john
  * @date 2019/12/8 - 13:47
  */
-@Document(indexName = "item",type = "docs", shards = 1, replicas = 0)
+@Document(indexName = "item", shards = 1, replicas = 0)
 public class Item {
     @Id
     private Long id;
