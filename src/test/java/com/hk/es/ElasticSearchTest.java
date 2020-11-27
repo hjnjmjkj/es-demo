@@ -8,6 +8,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.data.elasticsearch.core.IndexOperations;
 import org.springframework.data.elasticsearch.core.document.Document;
@@ -19,7 +22,7 @@ import org.springframework.test.context.junit4.SpringRunner;
  */
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class ElasticSearctTest {
+public class ElasticSearchTest {
     @Autowired
     private ElasticsearchRestTemplate elasticsearchRestTemplate;
     @Autowired
@@ -51,9 +54,19 @@ public class ElasticSearctTest {
             Item item = new Item();
             item.setId(1L+i);
             item.setTitle("我们都是中国人"+i);
+            item.setBrand("中国");
+            item.setCategory("大中国");
             /*item.setPrice(1.1);*/
             itemRepository.save(item);
         }
+    }
+    @Test
+    public void search() {
+        String keyword ="中国";
+        Pageable pageable = PageRequest.of(0, 100);
+        Page<Item> page = itemRepository.findByTitleOrCategoryOrBrand(keyword, keyword, keyword, pageable);
+        System.out.println(page.getContent());
+        System.out.println(page.getSize());
     }
 
 }
